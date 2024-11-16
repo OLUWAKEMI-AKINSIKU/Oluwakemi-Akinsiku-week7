@@ -20,7 +20,7 @@ fi
 # Initialize git if not already done
 if [ ! -d ".git" ]; then
   git init
-  git remote add origin https://"${GIT_TOKEN}"@github.com/"${USERNAME}"/"${REPO}".git
+  git remote add origin https://"${GIT_TOKEN}"@github.com/${USERNAME}/${REPO}.git
 fi
 
 # Stage all untracked files
