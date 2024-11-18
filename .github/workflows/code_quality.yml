@@ -10,30 +10,40 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3 
+        uses: actions/checkout@v4
 
       - name: Run Super-Linter
-        uses: github/super-linter@v5 
+        uses: github/super-linter@v4
         env:
-          VALIDATE_ALL_CODEBASE: true
+          VALIDATE_BASH: true
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  print_variables:
+  test:
     runs-on: ubuntu-latest
-    env:
-      USERNAME: "OLUWAKEMI-AKINSIKU" 
+    needs: check
     steps:
       - name: Print GitHub Token and Username
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          USERNAME: ${{ secrets.USERNAME }}
         run: |
-          echo "GitHub Token: ${{ secrets.GIT_TOKEN }}"
-          echo "GitHub Username: ${{ env.USERNAME }}"
-      - name: Debug Environment Variables
-        run: env
+          echo "GitHub Token: $GITHUB_TOKEN"
+          echo "GitHub Username: $USERNAME"
 
 
   build:
     runs-on: ubuntu-latest
+    needs: test
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Build or List Files
-        run: ls -R
+        run: ls -la
+
+      - name: make script executable
+        run: chmod +x num_count.sh
+
+      - name: run a bash script
+        run: ./num_count.sh
