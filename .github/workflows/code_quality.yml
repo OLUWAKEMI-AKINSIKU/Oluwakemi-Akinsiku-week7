@@ -1,0 +1,30 @@
+name: Code Quality Check and Build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  code_quality_check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run Super-Linter
+        uses: github/super-linter@v4
+
+  print_variables:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print GitHub Token and Username
+        run: |
+          echo "GitHub Token: ${{ secrets.GIT_TOKEN }}"
+          echo "GitHub Username: ${{ env.USERNAME }}"
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build or List Files
+        run: ls -R
